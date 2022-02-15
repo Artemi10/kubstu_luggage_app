@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Windows.Forms;
+using luggage_app.back_end;
 
 namespace luggage_app.front_end
 {
     public partial class LuggageTable : Form
     {
         private readonly ContainerRenderer _luggageTableRenderer;
+        private readonly LuggageContainer _luggageContainer;
         public LuggageTable()
         {
             InitializeComponent();
             _luggageTableRenderer = new ContainerRenderer(dataGridView1);
+            _luggageContainer = new LuggageContainer();
         }
 
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new AddNewLuggage(_luggageTableRenderer).ShowDialog();
+            new AddNewLuggage(_luggageContainer, _luggageTableRenderer).ShowDialog();
         }
 
         private void редактироватьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -22,7 +25,7 @@ namespace luggage_app.front_end
             var row = _luggageTableRenderer.SelectedRow;
             if (row != null && _luggageTableRenderer.RowSize > 1)
             {
-                new UpdateLuggage(_luggageTableRenderer, row).ShowDialog();
+                new UpdateLuggage(_luggageContainer, _luggageTableRenderer, row).ShowDialog();
             }
             else
             {
@@ -37,7 +40,9 @@ namespace luggage_app.front_end
             {
                 try
                 {
-                    _luggageTableRenderer.RemoveRow(Convert.ToInt32(row.Cells[0].Value));
+                    var id = Convert.ToInt32(row.Cells[0].Value);
+                    _luggageContainer.Remove(id);
+                    _luggageTableRenderer.Render(_luggageContainer.LuggageList);
                 }
                 catch (Exception exception)
                 {
@@ -48,6 +53,21 @@ namespace luggage_app.front_end
             {
                 MessageBox.Show("Выберете необходимую запись");
             }
+        }
+        
+        private void отчёт1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new Analytics(_luggageContainer, _luggageTableRenderer).ShowDialog();
+        }
+
+        private void отчёт2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new Analytics2(_luggageContainer).ShowDialog();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            new ChangeMaxWeight(_luggageContainer).ShowDialog();
         }
     }
 }

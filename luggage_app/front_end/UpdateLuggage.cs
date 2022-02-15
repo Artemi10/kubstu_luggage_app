@@ -6,11 +6,13 @@ namespace luggage_app.front_end
 {
     public partial class UpdateLuggage : Form
     {
+        private readonly LuggageContainer _container;
         private readonly ContainerRenderer _containerRenderer;
         private readonly int _id;
 
-        public UpdateLuggage(ContainerRenderer containerRenderer, DataGridViewRow luggageRow)
+        public UpdateLuggage(LuggageContainer container, ContainerRenderer containerRenderer, DataGridViewRow luggageRow)
         {
+            _container = container;
             _containerRenderer = containerRenderer;
             _id = Convert.ToInt32(luggageRow.Cells[0].Value);
             InitializeComponent(luggageRow);
@@ -22,10 +24,11 @@ namespace luggage_app.front_end
             {
                 var passengerSurname = textBox1.Text;
                 var code = textBox2.Text;
-                var weight = Convert.ToDouble(textBox3.Text);
-                var itemsAmount = Convert.ToInt32(textBox4.Text);
+                var weight = Convert.ToDouble(textBox4.Text);
+                var itemsAmount = Convert.ToInt32(textBox3.Text);
                 var luggage = new Luggage(passengerSurname, code, itemsAmount, weight);
-                _containerRenderer.UpdateRow(_id, luggage); 
+                _container.Update(_id, luggage);
+                _containerRenderer.Render(_container.LuggageList);
                 Close();
             }
             catch (LuggageException exception)

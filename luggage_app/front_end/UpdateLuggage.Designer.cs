@@ -152,7 +152,7 @@ namespace luggage_app.front_end
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(405, 37);
             this.label7.TabIndex = 12;
-            this.label7.Text = $"Вес багажа не должен превышать {_containerRenderer.MaxWeight} кг.";
+            this.label7.Text = $"Вес багажа не должен превышать {_container.MaxWeight} кг.";
             this.label7.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // button1

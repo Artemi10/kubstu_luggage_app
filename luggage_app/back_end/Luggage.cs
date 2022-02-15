@@ -15,6 +15,18 @@ namespace luggage_app.back_end
             _itemsAmount = itemsAmount;
             _weight = weight;
         }
+        
+        public double AverageItemWeight
+        {
+            get
+            {
+                if (_itemsAmount != 0)
+                {
+                    return _weight / _itemsAmount;
+                }
+                return 0;
+            }
+        }
 
         public string PassengerSurname 
         { 

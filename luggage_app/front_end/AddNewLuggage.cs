@@ -6,10 +6,12 @@ namespace luggage_app.front_end
 {
     public partial class AddNewLuggage : Form
     {
+        private readonly LuggageContainer _container;
         private readonly ContainerRenderer _luggageTableRenderer;
 
-        public AddNewLuggage(ContainerRenderer luggageTableRenderer)
+        public AddNewLuggage(LuggageContainer container, ContainerRenderer luggageTableRenderer)
         {
+            _container = container;
             _luggageTableRenderer = luggageTableRenderer;
             InitializeComponent();
         }
@@ -22,7 +24,8 @@ namespace luggage_app.front_end
                 var weight = Convert.ToDouble(textBox3.Text);
                 var itemsAmount = Convert.ToInt32(textBox4.Text);
                 var luggage = new Luggage(passengerSurname, code, itemsAmount, weight);
-                _luggageTableRenderer.AddRow(luggage); 
+                _container.Add(luggage);
+                _luggageTableRenderer.Render(_container.LuggageList);
                 reset_Form();
             }
             catch (LuggageException exception)
