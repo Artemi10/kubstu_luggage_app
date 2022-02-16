@@ -18,14 +18,27 @@ namespace luggage_app.back_end
         private int _maxItemsAmount;
         private double _maxWeight;
         private int _currentIndex;
-        readonly Dictionary<int, Luggage> _luggageContainer;
+        private readonly Dictionary<int, Luggage> _luggageContainer;
 
+        public LuggageContainer(Dictionary<int, Luggage> luggageContainer)
+        {
+            if (luggageContainer.Count != 0)
+            {
+                _currentIndex = luggageContainer.Keys.Max() + 1;
+            }
+            _maxItemsAmount = 5;
+            _maxWeight = 15.0;
+            _luggageContainer = luggageContainer;
+        }
+        
         public LuggageContainer()
         {
             _maxItemsAmount = 5;
             _maxWeight = 15.0;
             _luggageContainer = new Dictionary<int, Luggage>();
         }
+
+        public Dictionary<int, Luggage> Data => new (_luggageContainer);
 
         public double MaxWeight
         {

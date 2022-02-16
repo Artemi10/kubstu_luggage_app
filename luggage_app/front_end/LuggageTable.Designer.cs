@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace luggage_app.front_end
@@ -130,6 +131,9 @@ namespace luggage_app.front_end
             this.dataGridView1.Size = new System.Drawing.Size(678, 250);
             this.dataGridView1.TabIndex = 2;
             this.dataGridView1.Rows[0].ReadOnly = true;
+            this.dataGridView1.AllowDrop = true;
+            this.dataGridView1.DragDrop += this.dataGridView1_DragDrop;
+            this.dataGridView1.DragEnter += this.dataGridView1_DragEnter;
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -174,6 +178,7 @@ namespace luggage_app.front_end
             this.button2.TabIndex = 4;
             this.button2.Text = "Сохранить в файл";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += this.button2_Click;
             // 
             // button3
             // 
@@ -183,6 +188,7 @@ namespace luggage_app.front_end
             this.button3.TabIndex = 5;
             this.button3.Text = "Выгрузить из файла";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += this.button3_Click;
             // 
             // LuggageTable
             // 

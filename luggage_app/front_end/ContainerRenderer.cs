@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using luggage_app.back_end;
@@ -34,13 +35,13 @@ namespace luggage_app.front_end
             _dataGridView.Rows.Clear();
             var rows = luggageList
                 .Select(pair =>
-                    new[]
+                    new object[]
                     {
-                        pair.Item1.ToString(),
+                        pair.Item1,
                         pair.Item2.PassengerSurname,
                         pair.Item2.Code,
-                        pair.Item2.Weight.ToString(),
-                        pair.Item2.ItemsAmount.ToString()
+                        pair.Item2.Weight,
+                        pair.Item2.ItemsAmount
                     }).ToArray();
             for (var i = 0; i < rows.Length; i++)
             {

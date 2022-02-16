@@ -41,7 +41,7 @@ namespace luggage_app.back_end
 
         private (int, Luggage) ConvertToData(string line)
         {
-            var data = line.Split(",");
+            var data = line.Split(";");
             var id = Convert.ToInt32(data[0]);
             var luggage = new Luggage(data[1], data[2],
                 Convert.ToInt32(data[3]), Convert.ToDouble(data[4]));
@@ -50,7 +50,7 @@ namespace luggage_app.back_end
         
         private string ConvertToLine((int, Luggage) data)
         {
-            return $"{data.Item1},{data.Item2.PassengerSurname},{data.Item2.Code},{data.Item2.ItemsAmount},{data.Item2.Weight}";
+            return $"{data.Item1};{data.Item2.PassengerSurname};{data.Item2.Code};{data.Item2.ItemsAmount};{data.Item2.Weight}";
         }
     }
 }
