@@ -5,13 +5,7 @@ using System.Linq;
 
 namespace luggage_app.back_end
 {
-    public interface IFileService
-    {
-        void SaveToFile(Dictionary<int, Luggage> data);
-        Dictionary<int, Luggage> LoadFromFile();
-    }
-    
-    public class FileService : IFileService
+    public class FileService
     {
         private readonly string _filePath;
 

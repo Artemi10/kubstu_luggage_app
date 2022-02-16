@@ -4,16 +4,7 @@ using System.Linq;
 
 namespace luggage_app.back_end
 {
-    interface ILuggageContainer
-    {
-        void Add(Luggage luggage);
-        void Update(int id, Luggage luggage);
-        void Remove(int id);
-        int GetPassengerAmountWithMaxItemsAmount();
-        List<(int, Luggage)> GetLuggageWhereAverageWeightInRange(double delta);
-    }
-    
-    public class LuggageContainer : ILuggageContainer
+    public class LuggageContainer
     {
         private int _maxItemsAmount;
         private double _maxWeight;
@@ -38,7 +29,8 @@ namespace luggage_app.back_end
             _luggageContainer = new Dictionary<int, Luggage>();
         }
 
-        public Dictionary<int, Luggage> Data => new (_luggageContainer);
+        public Dictionary<int, Luggage> Data => _luggageContainer
+            .ToDictionary(pair => pair.Key, pair => (Luggage) pair.Value.Clone());
 
         public double MaxWeight
         {
@@ -60,7 +52,7 @@ namespace luggage_app.back_end
             get => _maxItemsAmount;
         }
 
-        private int ItemsAmount
+        public int ItemsAmount
         {
             get
             {
@@ -93,7 +85,8 @@ namespace luggage_app.back_end
             get
             {
                 return _luggageContainer
-                    .Select(pair => (pair.Key, pair.Value)).ToList();
+                    .Select(pair => (pair.Key, (Luggage) pair.Value.Clone()))
+                    .ToList();
             }
         }
         
@@ -101,13 +94,16 @@ namespace luggage_app.back_end
         {
             get
             {
-                return LuggageList.FindAll(pair => pair.Item2.Weight > MaxWeight);
+                return LuggageList
+                    .Select(pair => (pair.Item1, (Luggage) pair.Item2.Clone()))
+                    .Where(pair => pair.Item2.Weight > MaxWeight)
+                    .ToList();
             }
         }
 
         public void Add(Luggage luggage)
         {
-            if (luggage.IsValid())
+            if (luggage.IsValid)
             {
                 _luggageContainer[_currentIndex] = luggage;
                 _currentIndex++;
@@ -117,9 +113,9 @@ namespace luggage_app.back_end
 
         public void Update(int id, Luggage luggage)
         {
-            var luggageToUpdate = _luggageContainer[id];
-            if (luggageToUpdate != null)
+            if (_luggageContainer.ContainsKey(id))
             {
+                var luggageToUpdate = _luggageContainer[id];
                 luggageToUpdate.PassengerSurname = luggage.PassengerSurname;
                 luggageToUpdate.Code = luggage.Code;
                 luggageToUpdate.ItemsAmount = luggage.ItemsAmount;

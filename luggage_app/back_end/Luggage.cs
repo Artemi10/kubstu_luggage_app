@@ -1,7 +1,9 @@
 ﻿
+using System;
+
 namespace luggage_app.back_end
 {
-    public class Luggage 
+    public class Luggage : ICloneable 
     {
         private string _passengerSurname;
         private string _code;
@@ -30,9 +32,9 @@ namespace luggage_app.back_end
 
         public string PassengerSurname 
         { 
-            set 
+            set
             {
-                if (!string.IsNullOrEmpty(value.Trim())) _passengerSurname = value;
+                if (!string.IsNullOrWhiteSpace(value)) _passengerSurname = value;
                 else throw new LuggageException("Имя пользователя не может быть пустым");
             }
             get => _passengerSurname;
@@ -43,7 +45,7 @@ namespace luggage_app.back_end
             set 
             { 
                 if (value > 0.0) _weight = value;
-                else throw new LuggageException("Вес багажа не должен быть отрицательным");
+                else throw new LuggageException("Вес багажа должен быть положительным");
             }
             get => _weight;
         }
@@ -63,10 +65,32 @@ namespace luggage_app.back_end
             }
             get => _itemsAmount;
         }
-        
-        public bool IsValid()
-        { 
-            return !string.IsNullOrEmpty(_passengerSurname) && _weight > 0.0 && _itemsAmount > 0;
+
+        public bool IsValid => 
+            !string.IsNullOrEmpty(_passengerSurname) 
+            && _weight > 0.0 && _itemsAmount > 0;
+
+        protected bool Equals(Luggage other)
+        {
+            return _passengerSurname == other._passengerSurname && _code == other._code && _weight.Equals(other._weight) && _itemsAmount == other._itemsAmount;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Luggage) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_passengerSurname, _code, _weight, _itemsAmount);
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
     }
 }
