@@ -6,6 +6,7 @@ namespace luggage_app.back_end
     public class Luggage : ICloneable 
     {
         private string _passengerSurname;
+        private string _passengerAddress;
         private string _code;
         private double _weight;
         private int _itemsAmount;
@@ -13,6 +14,15 @@ namespace luggage_app.back_end
         public Luggage(string passengerSurname, string code, int itemsAmount, double weight)
         { 
             _passengerSurname = passengerSurname;
+            _code = code;
+            _itemsAmount = itemsAmount;
+            _weight = weight;
+        }
+        
+        public Luggage(string passengerSurname, string passengerAddress, string code, int itemsAmount, double weight)
+        { 
+            _passengerSurname = passengerSurname;
+            _passengerAddress = passengerAddress;
             _code = code;
             _itemsAmount = itemsAmount;
             _weight = weight;
